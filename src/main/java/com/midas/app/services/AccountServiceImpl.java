@@ -1,14 +1,17 @@
 package com.midas.app.services;
 
 import com.midas.app.models.Account;
+import com.midas.app.providers.external.stripe.StripeConfiguration;
 import com.midas.app.repositories.AccountRepository;
 import com.midas.app.workflows.CreateAccountWorkflow;
+import com.stripe.Stripe;
 import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.workflow.Workflow;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +22,8 @@ public class AccountServiceImpl implements AccountService {
   private final WorkflowClient workflowClient;
 
   private final AccountRepository accountRepository;
+
+  @Autowired private StripeConfiguration stripeConfiguration;
 
   /**
    * createAccount creates a new account in the system or provider.
@@ -34,10 +39,12 @@ public class AccountServiceImpl implements AccountService {
             .setWorkflowId(details.getEmail())
             .build();
 
-    logger.info("initiating workflow to create account for email: {}", details.getEmail());
+    logger.info(
+        "initiating workflow to create account for email: {} for api key: {}", details.getEmail());
+
+    Stripe.apiKey = stripeConfiguration.getApiKey();
 
     var workflow = workflowClient.newWorkflowStub(CreateAccountWorkflow.class, options);
-
     return workflow.createAccount(details);
   }
 

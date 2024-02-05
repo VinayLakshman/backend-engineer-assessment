@@ -27,6 +27,11 @@ components:
           description: "User's ID"
           readOnly: true
           example: "fba5b240-0e68-4e64-aca6-f12022dc4be3"
+        providerId:
+          type: string
+          description: "Provider ID"
+          readOnly: true
+          example: "cus_PVVb1vCd2DRf1T"
         firstName:
           type: string
           description: "User's first name"
@@ -39,6 +44,10 @@ components:
           type: string
           description: "Email of user"
           example: "john@doe.com"
+        providerType:
+          type: string
+          description: "Provider Type"
+          example: "stripe"
         createdAt:
           type: string
           format: date-time
