@@ -1,12 +1,5 @@
 # Getting Started
 
-**IMPORTANT: Do not send pull requests to this repository. This is a template repository and is not used for grading. Any pull requests will be closed and ignored.**
-
-## Introduction
-
-If you are reading this, you are probably have received this project as a coding challenge. Please read the instructions
-carefully and follow the steps below to get started.
-
 ## Setup
 
 ### Pre-requisities
@@ -50,10 +43,10 @@ Please check the official documentation for the installation of Java, Temporal, 
 ### Stripe API Keys
 
 Sign up for a Stripe account and get your API keys from the [Stripe Dashboard](https://dashboard.stripe.com/apikeys).
-Then in `application.properties` file add the following line with your secret key.
+Then in `application.properties` file replace "<STRIPE-API-KEY>" the following line with your secret key.
 
 ```properties
-stripe.api-key=sk_test_51J3j
+stripe.api-key=<STRIPE-API-KEY>
 ```
 
 ## Run
@@ -86,21 +79,24 @@ To format the code, use the following command
 ./gradlew spotlessApply
 ```
 
-## Guides
+## Implementation
+Three main classes have been defined for this project to work:
+1. AccountActivityImpl.java
+2. CreateAccountWorkflowImpl.java
+3. TemporalWorker.java
+4. TemporalConfig.java
 
-The following guides illustrate how to use some features concretely:
+### AccountActivityImpl.java
+This is the temporal Activity implementation that overrides the saveAccount and createPaymentAccount methods. The Stripe API request is executed in the createPaymentAccount method of this class. This activity class will be executed in the temporal workflow implementation class.
 
-- [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-- [Temporal Quick Start](https://docs.temporal.io/docs/quick-start)
-- [Temporal Java SDK Quick Guide](https://docs.temporal.io/dev-guide/java)
-- [Stripe Quick Start](https://stripe.com/docs/quickstart)
-- [Stripe Java SDK](https://stripe.com/docs/api/java)
+### CreateAccountWorkflowImpl.java
+This is the temporal Workflow implementation that overrides the createAccount method to execute the implemented temporal activity methods. The workflow ensures that the customer account is created and that the customer info is persisted in the database.
 
-### Docker Compose support
+### TemporalWorker.java
+This class defines the temporal worker instance that polls for tasks based on the queue name and registered workflow/activity implementations. The workflow will not progress despite being defined with activities if the workers are not defined.
 
-This project contains a Docker Compose file named `compose.yaml`.
-In this file, the following services have been defined:
+### TemporalConfig.java
+This is a configuration class that is used to define beans that call the worker methods and register the workflow and activity implementations.
 
-- postgres: [`postgres:latest`](https://hub.docker.com/_/postgres)
-
-Please review the tags of the used images and set them to the same as you're running in production.
+## Tests
+Not implemented
