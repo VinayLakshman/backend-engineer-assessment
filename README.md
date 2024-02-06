@@ -102,4 +102,10 @@ This is a configuration class that is used to define beans that call the worker 
 2 new fields were added in the entity model class. To accomodate this change, the openapi schema was also modified to ensure that all data is persisted successfully.
 
 ## Tests
-Not implemented
+Run the following command from the root project directory to execute the test classes:
+
+```sh
+./gradlew test
+```
+
+Note: Due to time constraints, only the temporal Activity class unit test was implemented.
