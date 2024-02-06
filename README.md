@@ -80,7 +80,7 @@ To format the code, use the following command
 ```
 
 ## Implementation
-Three main classes have been defined for this project to work:
+Three main classes have been defined for the temporal workflow to execute successfully:
 1. AccountActivityImpl.java
 2. CreateAccountWorkflowImpl.java
 3. TemporalWorker.java
@@ -98,5 +98,14 @@ This class defines the temporal worker instance that polls for tasks based on th
 ### TemporalConfig.java
 This is a configuration class that is used to define beans that call the worker methods and register the workflow and activity implementations.
 
+### Other Changes
+2 new fields were added in the entity model class. To accomodate this change, the openapi schema was also modified to ensure that all data is persisted successfully.
+
 ## Tests
-Not implemented
+Run the following command from the root project directory to execute the test classes:
+
+```sh
+./gradlew test
+```
+
+Note: Due to time constraints, only the temporal Activity class unit test was implemented.
